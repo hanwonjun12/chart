@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>유료 차트</title>
+  <a href="http://localhost:3000">무료 차트 검색하러 가기</a>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>유료 차트^__^</h1>
+  <div>
+    <label for="chartKeySelect">Select Chart Key:</label>
+    <select id="chartKeySelect" name="chartKey">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>  
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+      <option value="13">13</option>
+      <option value="14">14</option>
+      <option value="15">15</option>
+      <option value="16">16</option>
+      <option value="17">17</option>
+      <option value="18">18</option>
+      <option value="19">19</option>
+      <option value="20">20</option>
+      <option value="21">21</option>
+      <option value="22">22</option>
+      
+    </select>
+    <label for="chartTypeSelect">Select Chart Type:</label>
+    <select id="chartTypeSelect" name="chartType">
+      <option value="">All</option>
+      <option value="꺽은 선형 차트">꺽은 선형 차트</option>
+      <option value="라인 차트">라인 차트</option>
+      <option value="바 차트">바 차트</option>
+      <option value="막대 차트">막대 차트</option>
+      <option value="파이 차트">파이 차트</option>
+      <option value="파이 차트">파이 차트</option>
+      <option value="원형 차트">원형 차트</option>
+      <!-- 추가적인 차트 유형 옵션을 여기에 추가할 수 있습니다 -->
+    </select>
+
+    <button id="getDataButton">Get Data</button>
+  </div>
+  <table id="excelTable">
+    <tr>
+      <th>차트 키</th>
+      <th>차트 유형</th>
+      <th>차트 번호</th>
+      <th>차트 이름</th>
+      <th>차트 뷰</th>
+    </tr>
+    
+  </table>
+
+
+  <script>
+    document.getElementById('getDataButton').addEventListener('click', () => {
+      const chartKey = document.getElementById('chartKeySelect').value;
+      const chartType = document.getElementById('chartTypeSelect').value;
+  
+      let url = `/data?page=2`;
+      if (chartKey) {
+        url += `&chartKey=${chartKey}`;
+      }
+      if (chartType) {
+        url += `&chartType=${chartType}`;
+      }
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          const table = document.getElementById('excelTable');
+          table.innerHTML = data;
+          loadImages();
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    });
+  
+    function loadImages() {
+      const imageElements = document.querySelectorAll('#excelTable img');
+      imageElements.forEach(img => {
+        img.addEventListener('error', handleImageError);
+        img.addEventListener('load', handleImageLoad);
+        img.src = img.getAttribute('src');
+      });
+    }
+  </script>
+  </script>
+</body>
+</html>
