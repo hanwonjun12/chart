@@ -9,7 +9,7 @@ app.use('/chart-images', express.static(path.join(__dirname, 'chart-images')));
 async function readExcelData(page) {
   const workbook = new ExcelJS.Workbook();
   try {
-    const excelFilePath = path.resolve(__dirname, '230526_웹차트분석_.xlsx');
+    const excelFilePath = path.resolve(__dirname, '230530_웹차트분석_.xlsx');
     await workbook.xlsx.readFile(excelFilePath);
     const worksheet1 = workbook.getWorksheet('무료1');
     const worksheet2 = workbook.getWorksheet('유료1');
@@ -58,21 +58,36 @@ app.get('/data', async (req, res) => {
       const tableRows = filteredData.map(row => {
         const chartKey = row[1];
         const chartType = row[2];
-        const chartNumber = row[3];
+        const imageNumber = row[3];
         const chartName = row[4];
         let chartView = '';
-      
-        if (chartKey === 1 && chartType === '꺽은 선형 차트') {
-          const imageName = `chart${chartNumber}.png`;
+      if (chartKey === 1 && chartType === '꺽은 선형 차트') {
+          const imageName = `image${imageNumber}.png`;
           chartView = `<img src="/chart-images/${imageName}" alt="Chart View">`;
-        } else {
-          chartView = 'Chart View';
+        } else if (chartKey === 1 && chartType === '막대 차트') {
+         
+          for (let i = 0; i < imageNumber; i++) {
+            const imageName = `image${i + 14}.png`;
+            chartView= `<img src="/chart-images/${imageName}" alt="Chart View" style="display: inline-block;">`;
+          }
+        } else if(chartKey===1&&chartType==='원형 차트'){
+          for(let i=0;i<imageNumber;i++){
+            const imageName=`image${i + 23}.png`;
+            chartView= `<img src="/chart-images/${imageName}" alt="Chart View" style="display: inline-block;">`;
         }
-      
+      }else if(chartKey===2&&chartType==='꺽은 선형 차트'){
+          for (let i = 0; i < imageNumber; i++) {
+            const imageName = `image${i + 29}.png`;
+            chartView= `<img src="/chart-images/${imageName}" alt="Chart View" style="display: inline-block;">`;
+          }
+        }
+          else {
+          chartView ='Chart View';
+        }
         return `<tr>
                   <td>${chartKey}</td>
                   <td>${chartType}</td>
-                  <td>${chartNumber}</td>
+                  <td>${imageNumber}</td>
                   <td>${chartName}</td>
                   <td>${chartView}</td>
                 </tr>`;
@@ -123,7 +138,7 @@ app.get('/page2', async (req, res) => {
     res.status(500).send('Failed to read Excel data.');
   }
 });
-const port = 3000;
+const port = 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
 }); 
