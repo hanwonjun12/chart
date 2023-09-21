@@ -9,7 +9,7 @@ app.use('/chart-images', express.static(path.join(__dirname, 'chart-images')));
 async function readExcelData(page) {
   const workbook = new ExcelJS.Workbook();
   try {
-    const excelFilePath = path.resolve(__dirname, '230530_웹차트분석_.xlsx');
+    const excelFilePath = path.resolve(__dirname, '230710_웹차트분석_.xlsx');
     await workbook.xlsx.readFile(excelFilePath);
     const worksheet1 = workbook.getWorksheet('무료1');
     const worksheet2 = workbook.getWorksheet('유료1');
